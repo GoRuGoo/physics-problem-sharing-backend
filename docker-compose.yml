@@ -17,7 +17,7 @@ services:
       - ./api:/go/src/api # マウントディレクトリ
     ports:
       - '8080:8080'
-    env_file:
-      - mysql_and_datetime.env
+    #    env_file:
+      #  - mysql_and_datetime.env
 volumes:
   mysql-data:
