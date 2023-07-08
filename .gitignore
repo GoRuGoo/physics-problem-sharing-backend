@@ -27,3 +27,6 @@ docker/
 memo.md
 
 *.env
+
+
+physics-bucket.json

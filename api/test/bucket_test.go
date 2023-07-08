@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func main() {
+func test() {
 	credentialFilePath := "./physics-bucket.json"
 
 	ctx := context.Background()
