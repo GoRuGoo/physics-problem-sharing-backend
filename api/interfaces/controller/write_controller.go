@@ -23,7 +23,7 @@ func NewWriteController(bucketHandler bucket.BucketHandler) *WriteController {
 	}
 }
 
-func (w WriteController) WriteWithProblemNumberController(c Context, query string) {
+func (w WriteController) WriteWithProblemNumberController(c *gin.Context, query string) {
 	problem_num := c.Param(query)
 	var gazou os.File
 	err := w.Interactor.UniqueFileNameAssignment(problem_num, gazou)
