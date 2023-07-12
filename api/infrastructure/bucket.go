@@ -45,3 +45,18 @@ func (h *BucketHandler) WriteExecute(objectName string, fileData multipart.File)
 	}
 	return nil
 }
+
+func (h *BucketHandler) DeleteExecute(objectName string) error {
+	obj := h.bucket.Object(objectName)
+	attrs, err := obj.Attrs(h.ctx)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+	obj = obj.If(storage.Conditions{GenerationMatch: attrs.Generation})
+
+	err = obj.Delete(h.ctx)
+	if err != nil {
+		return errors.New(err.Error())
+	}
+	return nil
+}

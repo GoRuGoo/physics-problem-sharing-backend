@@ -15,8 +15,9 @@ func InitializeRouter() {
 	config.AllowOrigins = []string{"*"}
 	router.Use(cors.New(config))
 
-	controller := controller.NewWriteController(NewBucketHandler())
+	controller := controller.NewManipulateController(NewBucketHandler())
 
 	router.POST("/write/:problem_num", func(c *gin.Context) { controller.WriteWithProblemNumberController(c, "problem_num") })
+	router.DELETE("/delete/:problem_dir/:problem_num", func(c *gin.Context) { controller.DeleteWithFileNumberController(c) })
 	Router = router
 }

@@ -8,11 +8,11 @@ import (
 	"github.com/google/uuid"
 )
 
-type WriteInteractor struct {
-	Repository WriteRepository
+type ManipulateInteractor struct {
+	Repository ManipulateRepository
 }
 
-func (w WriteInteractor) UniqueFileNameAssignment(problenNumber string, fileData multipart.File) error {
+func (w ManipulateInteractor) UniqueFileNameAssignment(problenNumber string, fileData multipart.File) error {
 	uuid, err := generateUUID()
 	if err != nil {
 		return errors.New(err.Error())

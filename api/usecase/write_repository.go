@@ -4,6 +4,6 @@ import (
 	"mime/multipart"
 )
 
-type WriteRepository interface {
+type ManipulateRepository interface {
 	WriteHandler(string, multipart.File) error
 }
