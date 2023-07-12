@@ -1,15 +1,5 @@
 version: '3'
 services:
-  mysql:
-    build: ./build/develop/db/
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: gorupass
-    ports:
-      - 3306:3306
-    platform: linux/amd64
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=Asia/Tokyo
   api:
     build: ./build/develop/go/ # ビルドに使うDockerfileの場所
     tty: true # コンテナ永続化の設定
@@ -19,5 +9,3 @@ services:
       - '8080:8080'
     #    env_file:
       #  - mysql_and_datetime.env
-volumes:
-  mysql-data:
