@@ -1,7 +1,9 @@
 package usecase
 
-import "os"
+import (
+	"mime/multipart"
+)
 
 type WriteRepository interface {
-	WriteHandler(string, os.File) error
+	WriteHandler(string, multipart.File) error
 }

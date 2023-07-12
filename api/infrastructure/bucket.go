@@ -5,9 +5,8 @@ import (
 	"errors"
 	"io"
 	"log"
+	"mime/multipart"
 	"physics/interfaces/bucket"
-
-	"os"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/option"
@@ -33,10 +32,10 @@ func NewBucketHandler() bucket.BucketHandler {
 	return &BucketHandler{ctx: ctx, bucket: bucket}
 }
 
-func (h *BucketHandler) WriteExecute(objectName string, fileData os.File) error {
+func (h *BucketHandler) WriteExecute(objectName string, fileData multipart.File) error {
 	obj := h.bucket.Object(objectName)
 	writer := obj.NewWriter(h.ctx)
-	_, err := io.Copy(writer, &fileData)
+	_, err := io.Copy(writer, fileData)
 	if err != nil {
 		return errors.New(err.Error())
 	}

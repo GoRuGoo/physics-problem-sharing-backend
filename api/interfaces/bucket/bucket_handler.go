@@ -1,7 +1,9 @@
 package bucket
 
-import "os"
+import (
+	"mime/multipart"
+)
 
 type BucketHandler interface {
-	WriteExecute(string, os.File) error
+	WriteExecute(string, multipart.File) error
 }

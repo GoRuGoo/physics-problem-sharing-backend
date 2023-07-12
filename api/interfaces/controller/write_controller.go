@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
-	"os"
 	"physics/interfaces/bucket"
 	"physics/usecase"
 
@@ -25,8 +25,19 @@ func NewWriteController(bucketHandler bucket.BucketHandler) *WriteController {
 
 func (w WriteController) WriteWithProblemNumberController(c *gin.Context, query string) {
 	problem_num := c.Param(query)
-	var gazou os.File
-	err := w.Interactor.UniqueFileNameAssignment(problem_num, gazou)
+	file, err := c.FormFile("problem_file")
+	if err != nil {
+		fmt.Println("file erro")
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	problem_src, err := file.Open()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	defer problem_src.Close()
+
+	err = w.Interactor.UniqueFileNameAssignment(problem_num, problem_src)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

@@ -17,5 +17,6 @@ func InitializeRouter() {
 
 	controller := controller.NewWriteController(NewBucketHandler())
 
-	router.PUT("/write/:problem_num", func(c *gin.Context) { controller.WriteWithProblemNumberController(c, "problem_num") })
+	router.POST("/write/:problem_num", func(c *gin.Context) { controller.WriteWithProblemNumberController(c, "problem_num") })
+	Router = router
 }
