@@ -6,9 +6,11 @@ import (
 	"io"
 	"log"
 	"mime/multipart"
+	"path/filepath"
 	"physics/interfaces/bucket"
 
 	"cloud.google.com/go/storage"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -57,4 +59,23 @@ func (h *BucketHandler) DeleteExecute(objectName string) error {
 		return errors.New(err.Error())
 	}
 	return nil
+}
+
+func (h *BucketHandler) SelectAllExecute(dirName string) ([]string, error) {
+
+	consolidated_object_path := filepath.Join("physics-problem-sharing-bucket", dirName)
+
+	var list_with_problem_number []string
+	it := h.client.Bucket(consolidated_object_path).Objects(h.ctx, nil)
+	for {
+		attrs, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return list_with_problem_number, errors.New(err.Error())
+		}
+		list_with_problem_number = append(list_with_problem_number, attrs.Name)
+	}
+	return list_with_problem_number, nil
 }
