@@ -30,19 +30,23 @@ func (w ManipulateController) WriteWithProblemNumberController(c *gin.Context, p
 	file, err := c.FormFile("problem_file")
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	problem_src, err := file.Open()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	defer problem_src.Close()
 
 	err = w.Interactor.UniqueFileNameAssignment(problem_num, problem_src)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"ok": "ok"})
+	return
 }
 
 func (w ManipulateController) DeleteWithFileNumberController(c *gin.Context) {
@@ -54,8 +58,10 @@ func (w ManipulateController) DeleteWithFileNumberController(c *gin.Context) {
 	err := w.BucketHandler.DeleteExecute(object_path)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"ok": "ok"})
+	return
 }
 func (w ManipulateController) GetAllObjectsController(c *gin.Context) {
 	problem_lists, err := w.BucketHandler.SelectAllObjectsExecute()
