@@ -57,3 +57,23 @@ func (w ManipulateController) DeleteWithFileNumberController(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"ok": "ok"})
 }
+func (w ManipulateController) GetAllObjectsController(c *gin.Context) {
+	problem_lists, err := w.BucketHandler.SelectAllObjectsExecute()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"ok": problem_lists})
+	return
+}
+
+func (w ManipulateController) GetSpecificObjectsController(c *gin.Context) {
+	problem_num := c.Param("problem_num")
+	problem_lists, err := w.BucketHandler.SelectSpecificObjectsExecute(problem_num)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"ok": problem_lists})
+	return
+}

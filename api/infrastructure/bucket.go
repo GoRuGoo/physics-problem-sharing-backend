@@ -9,6 +9,7 @@ import (
 	"physics/interfaces/bucket"
 
 	"cloud.google.com/go/storage"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
@@ -59,4 +60,42 @@ func (h *BucketHandler) DeleteExecute(objectName string) error {
 		return errors.New(err.Error())
 	}
 	return nil
+}
+
+func (h *BucketHandler) SelectAllObjectsExecute() ([]string, error) {
+	var return_object_list []string
+	obj := h.bucket.Objects(h.ctx, nil)
+
+	for {
+		attrs, err := obj.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return return_object_list, errors.New(err.Error())
+		}
+
+		return_object_list = append(return_object_list, attrs.Name)
+	}
+	return return_object_list, nil
+
+}
+
+func (h *BucketHandler) SelectSpecificObjectsExecute(dirName string) ([]string, error) {
+	var return_object_list []string
+	obj := h.bucket.Objects(h.ctx, &storage.Query{
+		Prefix: dirName,
+	})
+	for {
+		attrs, err := obj.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return return_object_list, errors.New(err.Error())
+		}
+
+		return_object_list = append(return_object_list, attrs.Name)
+	}
+	return return_object_list, nil
 }
